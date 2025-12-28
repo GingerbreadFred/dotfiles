@@ -1,0 +1,9 @@
+{{- if eq .chezmoi.os "darwin"}}
+.config/whkdrc
+.config/powershell/
+.config/yasb
+komorebi.json
+{{- else if eq .chezmoi.os "windows"}}
+.zshrc
+.config/aerospace/
+{{- end}}
