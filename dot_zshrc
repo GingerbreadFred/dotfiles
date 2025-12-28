@@ -1,0 +1,13 @@
+export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
+  eval "$(oh-my-posh init zsh --config $(brew --prefix oh-my-posh)/themes/catppuccin_mocha.omp.json)"
+fi
+
+autoload -Uz compinit && compinit
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+
+export EDITOR="nvim"
+export VISUAL="nvim"
+
+alias ls='gls -alGh --classify --group-directories-first'
+alias ll='ls'
