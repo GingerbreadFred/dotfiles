@@ -1,3 +1,4 @@
+.config/yasb/yasb.log
 {{- if eq .chezmoi.os "darwin"}}
 .config/whkdrc
 .config/powershell/
