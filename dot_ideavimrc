@@ -1,21 +1,19 @@
 set scrolloff=5
-
 set incsearch
+let mapleader = " " 
 
-plug 'machakann/vim-highlightedyank' 
-plug 'tpope/vim-surround'
+set highlightedyank
+set surround
+set easymotion
 
 map Q gq
 set relativenumber
-set number
 set ignorecase
 set smartcase
-set which-key
 set clipboard+=unnamed 
 set showcmd
 set showmode
 
-let mapleader = " " 
  
 "Navigation
 noremap <C-d> <C-d>zz
@@ -27,6 +25,7 @@ nmap <leader>4 <Action>(HarpoonerOpenFile3)
 nmap <leader>5 <Action>(HarpoonerOpenFile4)
 nmap <leader>ha <Action>(HarpoonerToggleFile)
 nmap <leader>hh <Action>(HarpoonerToggleQuickMenu)
+nmap <leader>wqa <Action>(CloseAllEditorsButActive)
 
 "Editing
 vnoremap J dpV'] "Move line down
@@ -39,6 +38,7 @@ nnoremap <S-Tab> <<
 "Searching
 nmap <leader>sf <Action>(GotoFile)
 nmap <leader>sg <Action>(FindInPath)
+nmap <leader>sr <Action>(ReplaceInPath)
 nmap <leader>sds <Action>(FileStructurePopup) 
 nmap gh <Action>(SwitchHeaderSource)
 nmap gd <Action>(GotoDeclaration)
@@ -48,6 +48,8 @@ nmap gr <Action>(FindUsages)
 nmap <leader>ca <Action>(ShowIntentionActions)
 vmap <leader>ca <Action>(ShowIntentionActions)
 nmap <leader>rn <Action>(RenameElement)
+nmap <leader>rt <Action>(Refactorings.QuickListPopupAction)
+vmap <leader>rt <Action>(Refactorings.QuickListPopupAction)
 
 "Debugging
 nmap <leader>dc <Action>(Resume)
