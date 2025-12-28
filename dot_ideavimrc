@@ -1,0 +1,67 @@
+set scrolloff=5
+
+set incsearch
+
+plug 'machakann/vim-highlightedyank' 
+plug 'tpope/vim-surround'
+
+map Q gq
+set relativenumber
+set number
+set ignorecase
+set smartcase
+set which-key
+set clipboard+=unnamed 
+set showcmd
+set showmode
+
+let mapleader = " " 
+ 
+"Navigation
+noremap <C-d> <C-d>zz
+noremap <C-u> <C-u>zz
+nmap <leader>1 <Action>(HarpoonerOpenFile0)
+nmap <leader>2 <Action>(HarpoonerOpenFile1)
+nmap <leader>3 <Action>(HarpoonerOpenFile2)
+nmap <leader>4 <Action>(HarpoonerOpenFile3)
+nmap <leader>5 <Action>(HarpoonerOpenFile4)
+nmap <leader>ha <Action>(HarpoonerToggleFile)
+nmap <leader>hh <Action>(HarpoonerToggleQuickMenu)
+
+"Editing
+vnoremap J dpV'] "Move line down
+vnoremap K d-PV'] "Move line up
+vnoremap <Tab> >gv
+vnoremap <S-Tab> <gv
+nnoremap <Tab> >>
+nnoremap <S-Tab> <<
+
+"Searching
+nmap <leader>sf <Action>(GotoFile)
+nmap <leader>sg <Action>(FindInPath)
+nmap <leader>sds <Action>(FileStructurePopup) 
+nmap gh <Action>(SwitchHeaderSource)
+nmap gd <Action>(GotoDeclaration)
+nmap gr <Action>(FindUsages)
+
+"Refactoring
+nmap <leader>ca <Action>(ShowIntentionActions)
+vmap <leader>ca <Action>(ShowIntentionActions)
+nmap <leader>rn <Action>(RenameElement)
+
+"Debugging
+nmap <leader>dc <Action>(Resume)
+nmap <leader>di <Action>(StepInto)
+nmap <leader>do <Action>(StepOver)
+nmap <leader>dO <Action>(StepOut)
+nmap <leader>ds <Action>(Debug)
+nmap <leader>db <Action>(ToggleLineBreakpoint)
+
+"Building
+nmap <leader>bb <Action>(BuildStartupProject)
+nmap <leader>br <Action>(UnrealLink.HotReloadBuild)
+nmap <leader>bc <Action>(CancelBuildAction)
+
+"Files
+nmap - <Action>(ShowNavBar)
+nmap <leader>nf <Action>(NewElementInSamePlace)
