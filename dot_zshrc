@@ -11,3 +11,15 @@ export VISUAL="nvim"
 
 alias ls='gls -alGh --classify --group-directories-first'
 alias ll='ls'
+
+git-prune-branches() {
+  git fetch -p
+  local branches=$(git branch -vv | grep ': gone]' | awk '{print $1}')
+  if [[ -z "$branches" ]]; then
+    echo "No branches with detached remotes found."
+    return
+  fi
+  echo "Deleting branches with gone remotes:"
+  echo "$branches"
+  echo "$branches" | xargs git branch -D
+}
