@@ -4,7 +4,13 @@
 .config/powershell/
 .config/yasb
 komorebi.json
+Documents/
 {{- else if eq .chezmoi.os "windows"}}
 .zshrc
 .config/aerospace/
+{{- if .remote }}
+komorebi.json
+.config/whkdrc
+.config/yasb
+{{- end }}
 {{- end}}

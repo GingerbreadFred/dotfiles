@@ -1,0 +1,3 @@
+{{- $remote := promptBoolOnce . "remote" "Is this a machine you remote into (skip komorebi/whkd/yasb)" -}}
+[data]
+    remote = {{ $remote }}
