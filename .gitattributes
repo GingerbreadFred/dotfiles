@@ -1,0 +1,8 @@
+# Keep these LF on every platform. core.autocrlf=true would otherwise check
+# them out as CRLF on Windows, and chezmoi copies the source bytes verbatim
+# into the target — a stray \r breaks the bash status line script and leaves a
+# permanent CRLF-vs-LF chezmoi diff on the rendered settings.json.
+*.sh        text eol=lf
+*.sh.tmpl   text eol=lf
+*.zsh       text eol=lf
+*.json.tmpl text eol=lf

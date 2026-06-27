@@ -1,0 +1,12 @@
+{
+  "statusLine": {
+    "type": "command",
+    "command": {{ if eq .chezmoi.os "windows" }}"\"C:/Program Files/Git/bin/bash.exe\" {{ .chezmoi.homeDir | replace "\\" "/" }}/.claude/statusline-command.sh"{{ else }}"bash {{ .chezmoi.homeDir }}/.claude/statusline-command.sh"{{ end }},
+    "refreshInterval": 1
+  },
+  "effortLevel": "xhigh",
+  "theme": "auto",
+  "enabledPlugins": {
+    "superpowers@claude-plugins-official": true
+  }
+}
