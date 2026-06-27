@@ -37,8 +37,8 @@ vim.opt.shiftwidth = 4
 vim.opt.wrap = false
 vim.opt.exrc = true
 vim.opt.secure = true
-vim.opt.errorbells = true
-vim.opt.belloff = ''
+vim.opt.errorbells = false
+vim.opt.belloff = 'all'
 
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
