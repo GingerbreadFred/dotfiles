@@ -1,21 +1,47 @@
 #!/usr/bin/env bash
 input=$(cat)
 
-# Single jq pass — this script re-runs on a 1s refreshInterval, so keep the
-# per-render cost to one process spawn. Fields are tab-separated; spaces inside
-# a field (e.g. "VISUAL LINE") survive because IFS is just the tab.
-IFS=$'\t' read -r model effort used five_pct five_reset week_pct week_reset vim_mode <<< "$(
-  printf '%s' "$input" | jq -r '[
-    (.model.display_name // "Claude"),
-    (.effort.level // ""),
-    (.context_window.used_percentage // ""),
-    (.rate_limits.five_hour.used_percentage // ""),
-    (.rate_limits.five_hour.resets_at // ""),
-    (.rate_limits.seven_day.used_percentage // ""),
-    (.rate_limits.seven_day.resets_at // ""),
-    (.vim.mode // "")
-  ] | @tsv'
-)"
+# Field extraction without jq — this script re-runs on a 1s refreshInterval and
+# Git Bash ships no jq, so we parse the statusLine JSON in pure bash. Bash's own
+# =~ / BASH_REMATCH does the work in-process, spawning zero external programs.
+#
+# Flatten CR/LF first so a pretty-printed payload matches too: the field regexes
+# below assume each "key": value pair sits on a single line.
+input=${input//$'\r'/ }
+input=${input//$'\n'/ }
+
+# _get KIND KEY JSON -> sets REPLY to the captured value ("" if the key is
+# absent).  str: "k":"v"  |  num: "k":123 / 1.5e9  |  obj: "k":{ ... }
+# For keys that repeat (used_percentage lives under three parents, resets_at
+# under two) we first pull the enclosing sub-object with 'obj', then look the
+# scalar up inside that fragment so the match is unambiguous. The 'obj' pattern
+# tolerates one level of nesting: context_window wraps a nested current_usage
+# object *before* its used_percentage, so a naive [^}]* would stop at the first
+# '}' and miss the field. The rate-limit buckets are flat and match too.
+_get() {
+  local kind="$1" key="$2" s="$3" re
+  case "$kind" in
+    str) re="\"$key\"[[:space:]]*:[[:space:]]*\"([^\"]*)\"" ;;
+    num) re="\"$key\"[[:space:]]*:[[:space:]]*(-?[0-9][0-9.eE+-]*)" ;;
+    obj) re="\"$key\"[[:space:]]*:[[:space:]]*[{]([^{}]*([{][^}]*[}][^{}]*)*)[}]" ;;
+  esac
+  if [[ $s =~ $re ]]; then REPLY="${BASH_REMATCH[1]}"; else REPLY=""; fi
+}
+
+_get str display_name "$input"; model="$REPLY"; [ -z "$model" ] && model="Claude"
+_get str level        "$input"; effort="$REPLY"
+_get str mode         "$input"; vim_mode="$REPLY"
+
+_get obj context_window "$input";  ctx_obj="$REPLY"
+_get num used_percentage "$ctx_obj"; used="$REPLY"
+
+_get obj five_hour "$input";          five_obj="$REPLY"
+_get num used_percentage "$five_obj"; five_pct="$REPLY"
+_get num resets_at       "$five_obj"; five_reset="$REPLY"
+
+_get obj seven_day "$input";          week_obj="$REPLY"
+_get num used_percentage "$week_obj"; week_pct="$REPLY"
+_get num resets_at       "$week_obj"; week_reset="$REPLY"
 
 now=$(date +%s)
 
