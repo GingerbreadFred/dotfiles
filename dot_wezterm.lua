@@ -10,6 +10,13 @@ config.font_size = 14
 config.window_decorations = "RESIZE"
 config.window_close_confirmation = "NeverPrompt"
 
+config.window_padding = {
+	left = 12,
+	right = 12,
+	top = 8,
+	bottom = 8,
+}
+
 if wezterm.target_triple:find("windows") then
 	config.default_prog = {
 		"pwsh.exe",
