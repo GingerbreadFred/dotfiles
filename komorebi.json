@@ -9,6 +9,15 @@
   "border_width": 5,
   "border_offset": -1,
   "transparency": false,
+  "ignore_rules": [
+    [
+      { "kind": "Exe", "id": "rpcs3.exe", "matching_strategy": "Equals" },
+      { "kind": "Title", "id": "FPS:", "matching_strategy": "Contains" }
+    ]
+  ],
+  "object_name_change_applications": [
+    { "kind": "Exe", "id": "rpcs3.exe", "matching_strategy": "Equals" }
+  ],
   "theme": {
     "palette": "Base16",
     "name": "Ashes",
