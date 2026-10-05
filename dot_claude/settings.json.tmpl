@@ -1,12 +1,43 @@
 {
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "^(startup|resume|clear|compact|fork)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": {{ if eq .chezmoi.os "windows" }}"\"C:/Program Files/Git/bin/bash.exe\" '{{ .chezmoi.homeDir | replace "\\" "/" }}/.claude/hooks/herdr-agent-state.sh' session"{{ else }}"bash '{{ .chezmoi.homeDir }}/.claude/hooks/herdr-agent-state.sh' session"{{ end }},
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
   "statusLine": {
     "type": "command",
     "command": {{ if eq .chezmoi.os "windows" }}"\"C:/Program Files/Git/bin/bash.exe\" {{ .chezmoi.homeDir | replace "\\" "/" }}/.claude/statusline-command.sh"{{ else }}"bash {{ .chezmoi.homeDir }}/.claude/statusline-command.sh"{{ end }},
     "refreshInterval": 1
   },
-  "effortLevel": "xhigh",
-  "theme": "auto",
   "enabledPlugins": {
-    "superpowers@claude-plugins-official": true
-  }
+    "superpowers@claude-plugins-official": true,
+    "plannotator@plannotator": true
+  },
+  "extraKnownMarketplaces": {
+    "plannotator": {
+      "source": {
+        "source": "github",
+        "repo": "backnotprop/plannotator"
+      }
+    }
+  },
+  "effortLevel": "xhigh",
+  "modelSettings": {
+    "claude-opus-5-5": {
+      "effortLevel": "xhigh"
+    }
+  },
+  "theme": "auto",
+  "autoCompactEnabled": false,
+  "inputNeededNotifEnabled": true,
+  "agentPushNotifEnabled": true
 }
