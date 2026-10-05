@@ -10,13 +10,6 @@ config.font_size = 14
 config.window_decorations = "RESIZE"
 config.window_close_confirmation = "NeverPrompt"
 
-config.window_padding = {
-	left = 12,
-	right = 12,
-	top = 8,
-	bottom = 8,
-}
-
 if wezterm.target_triple:find("windows") then
 	config.default_prog = {
 		"pwsh.exe",
@@ -45,9 +38,20 @@ tabline.setup({
 	options = {
 		theme = "Tokyo Night",
 	},
+	sections = {
+		tabline_y = {},
+	},
 })
 
 tabline.apply_to_config(config)
+
+-- Must come after apply_to_config, which zeroes window_padding.
+config.window_padding = {
+	left = 16,
+	right = 16,
+	top = 8,
+	bottom = 8,
+}
 
 config.tab_bar_at_bottom = true
 
