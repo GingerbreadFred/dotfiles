@@ -8,6 +8,7 @@ Documents/
 {{- else if eq .chezmoi.os "windows"}}
 .zshrc
 .config/aerospace/
+.claude/hooks/herdr-agent-state.sh
 {{- if .remote }}
 komorebi.json
 .config/whkdrc
