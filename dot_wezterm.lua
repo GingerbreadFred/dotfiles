@@ -38,6 +38,19 @@ tabline.setup({
 	options = {
 		theme = "Tokyo Night",
 	},
+	-- Show only the tab name. Sections are pinned explicitly (rather than
+	-- relying on the plugin's defaults) so every machine renders the same
+	-- regardless of which cached plugin version it happens to have.
+	sections = {
+		tabline_a = {},
+		tabline_b = {},
+		tabline_c = {},
+		tab_active = { "process" },
+		tab_inactive = { "process" },
+		tabline_x = {},
+		tabline_y = {},
+		tabline_z = {},
+	},
 })
 
 tabline.apply_to_config(config)
