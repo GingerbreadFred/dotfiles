@@ -55,7 +55,7 @@ widgets:
   libre_cpu:
     type: "yasb.libre_monitor.LibreHardwareMonitorWidget"
     options:
-      label: "{info[value]}{info[unit]}"
+      label: "<span>\uf4bc</span> {info[value]}{info[unit]}"
       sensor_id: "/amdcpu/0/temperature/2"
       update_interval: 1000
       precision: 2
@@ -88,7 +88,7 @@ widgets:
   libre_gpu:
     type: "yasb.libre_monitor.LibreHardwareMonitorWidget"
     options:
-      label: "{info[value]}{info[unit]}"
+      label: "<span>\udb82\udcae</span> {info[value]}{info[unit]}"
       sensor_id: "/gpu-nvidia/0/temperature/0"
       update_interval: 1000
       precision: 2
@@ -124,8 +124,8 @@ widgets:
       label: "{title}"
       label_alt: "{artist} - {title}"
       max_field_size:
-        label: 24
-        label_alt: 24
+        label: 50
+        label_alt: 50
       show_thumbnail: true
       controls_only: false
       controls_left: true

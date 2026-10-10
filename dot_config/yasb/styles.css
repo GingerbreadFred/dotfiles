@@ -30,9 +30,9 @@ QToolTip {
     border-radius: 6px;
 }
 * {
-    font-size: 12px;
+    font-size: 13px;
     color: var(--text);
-    font-weight: 600;
+    font-weight: 700;
     font-family: "FiraCode Nerd Font Propo";
     margin: 0;
     padding: 0;
@@ -77,13 +77,13 @@ QToolTip {
 }
 .komorebi-workspaces .offline-status {
     color: var(--surface2);
-    font-size: 12px;
-    font-weight: 600;
+    font-size: 13px;
+    font-weight: 700;
 }
 .komorebi-workspaces .ws-btn {
     border: none;
     background-color: transparent;
-    font-size: 12px;
+    font-size: 13px;
     color: var(--overlay1);
     height: 28px;
 	margin: 0 8px 0 8px;
@@ -180,8 +180,12 @@ QToolTip {
     color: var(--blue);
     margin: 0px 2px 0 0;
 }
+.libre-monitor-widget .icon {
+    margin: 0 4px 0 0;
+}
 .weather-widget,
-.volume-widget {
+.volume-widget,
+.libre-monitor-widget {
     padding: 0 6px;
 }
 .weather-widget .icon {
@@ -198,7 +202,7 @@ QToolTip {
     color: #bac2db;
     padding: 0px;
     padding-right: 4px;
-    font-size: 12px;
+    font-size: 13px;
 }
 .media-widget .btn {
     color: #7a7f8b;
