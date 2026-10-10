@@ -58,10 +58,10 @@ tabline.apply_to_config(config)
 -- Must come AFTER tabline.apply_to_config: the plugin force-resets
 -- window_padding to 0, so our margins have to be set afterwards to win.
 config.window_padding = {
-	left = 8,
-	right = 8,
-	top = 1,
-	bottom = 1,
+	left = 16,
+	right = 16,
+	top = 8,
+	bottom = 8,
 }
 
 config.tab_bar_at_bottom = true

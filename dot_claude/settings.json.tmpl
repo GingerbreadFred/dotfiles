@@ -1,12 +1,58 @@
+{{- /* On macOS chezmoi installs the herdr hook itself. On Windows herdr installs
+       its own .ps1 (.claude/hooks is ignored there), so only wire it up if present. */}}
+{{- $herdrHook := "" }}
+{{- if eq .chezmoi.os "darwin" }}
+{{-   $herdrHook = printf "bash '%s/.claude/hooks/herdr-agent-state.sh' session" .chezmoi.homeDir }}
+{{- else if eq .chezmoi.os "windows" }}
+{{-   $herdrPs1 := joinPath .chezmoi.homeDir ".claude" "hooks" "herdr-agent-state.ps1" }}
+{{-   if stat $herdrPs1 }}
+{{-     $herdrHook = printf "powershell -NoProfile -ExecutionPolicy Bypass -File \"%s\" session" $herdrPs1 }}
+{{-   end }}
+{{- end -}}
 {
+  "model": "opus[1m]",
+{{- if $herdrHook }}
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "^(startup|resume|clear|compact|fork)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": {{ toJson $herdrHook }},
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
+{{- end }}
   "statusLine": {
     "type": "command",
     "command": {{ if eq .chezmoi.os "windows" }}"\"C:/Program Files/Git/bin/bash.exe\" {{ .chezmoi.homeDir | replace "\\" "/" }}/.claude/statusline-command.sh"{{ else }}"bash {{ .chezmoi.homeDir }}/.claude/statusline-command.sh"{{ end }},
     "refreshInterval": 1
   },
-  "effortLevel": "xhigh",
-  "theme": "auto",
   "enabledPlugins": {
-    "superpowers@claude-plugins-official": true
-  }
+    "superpowers@claude-plugins-official": true,
+    "plannotator@plannotator": true
+  },
+  "extraKnownMarketplaces": {
+    "plannotator": {
+      "source": {
+        "source": "github",
+        "repo": "backnotprop/plannotator"
+      }
+    }
+  },
+  "effortLevel": "xhigh",
+  "modelSettings": {
+    "claude-opus-5-5": {
+      "effortLevel": "xhigh"
+    }
+  },
+  "skipWorkflowUsageWarning": true,
+  "theme": "auto",
+  "autoCompactEnabled": false,
+  "inputNeededNotifEnabled": true,
+  "agentPushNotifEnabled": true
 }
