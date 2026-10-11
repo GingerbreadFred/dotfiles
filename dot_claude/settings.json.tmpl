@@ -1,5 +1,5 @@
 {{- /* On macOS chezmoi installs the herdr hook itself. On Windows herdr installs
-       its own .ps1 (.claude/hooks is ignored there), so only wire it up if present. */}}
+       its own .ps1 (herdr's .sh is ignored there), so only wire it up if present. */}}
 {{- $herdrHook := "" }}
 {{- if eq .chezmoi.os "darwin" }}
 {{-   $herdrHook = printf "bash '%s/.claude/hooks/herdr-agent-state.sh' session" .chezmoi.homeDir }}
@@ -11,8 +11,8 @@
 {{- end -}}
 {
   "model": "opus[1m]",
-{{- if $herdrHook }}
   "hooks": {
+{{- if $herdrHook }}
     "SessionStart": [
       {
         "matcher": "^(startup|resume|clear|compact|fork)$",
@@ -24,9 +24,22 @@
           }
         ]
       }
+    ],
+{{- end }}
+    "PostToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": {{ if eq .chezmoi.os "windows" }}"\"C:/Program Files/Git/bin/bash.exe\" {{ .chezmoi.homeDir | replace "\\" "/" }}/.claude/hooks/plannotator-superpowers.sh"{{ else }}"bash {{ .chezmoi.homeDir }}/.claude/hooks/plannotator-superpowers.sh"{{ end }},
+            "timeout": 345600,
+            "statusMessage": "Waiting for Plannotator review"
+          }
+        ]
+      }
     ]
   },
-{{- end }}
   "statusLine": {
     "type": "command",
     "command": {{ if eq .chezmoi.os "windows" }}"\"C:/Program Files/Git/bin/bash.exe\" {{ .chezmoi.homeDir | replace "\\" "/" }}/.claude/statusline-command.sh"{{ else }}"bash {{ .chezmoi.homeDir }}/.claude/statusline-command.sh"{{ end }},
