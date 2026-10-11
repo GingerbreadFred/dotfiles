@@ -10,6 +10,9 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 export EDITOR="nvim"
 export VISUAL="nvim"
 
+# Open Plannotator in a new Firefox window rather than a tab
+export PLANNOTATOR_BROWSER="$HOME/.plannotator/firefox-new-window.sh"
+
 alias ls='gls -alGh --classify --group-directories-first'
 alias ll='ls'
 

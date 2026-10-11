@@ -9,6 +9,7 @@ Documents/
 .zshrc
 .config/aerospace/
 .claude/hooks/herdr-agent-state.sh
+.plannotator
 {{- if .remote }}
 komorebi.json
 .config/whkdrc

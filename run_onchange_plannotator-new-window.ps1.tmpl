@@ -1,0 +1,24 @@
+{{ if eq .chezmoi.os "windows" -}}
+# Open Plannotator in a new Firefox window instead of a tab in an existing one.
+# Plannotator launches PLANNOTATOR_BROWSER with `cmd /c start "" <browser> <url>`,
+# which can't carry extra flags, so point it at a shortcut that adds -new-window.
+# (A .cmd wrapper would also work, but flashes a console window every time.)
+$ErrorActionPreference = "Stop"
+
+$appPath = Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\firefox.exe" -ErrorAction SilentlyContinue
+if (-not $appPath) {
+    Write-Host "Firefox not installed, leaving Plannotator on the default browser."
+    exit 0
+}
+
+$link = [IO.Path]::Combine($HOME, ".plannotator", "firefox-new-window.lnk")
+New-Item -ItemType Directory -Force (Split-Path $link) | Out-Null
+
+$shortcut = (New-Object -ComObject WScript.Shell).CreateShortcut($link)
+$shortcut.TargetPath = $appPath.'(default)'
+$shortcut.Arguments = "-new-window"
+$shortcut.Save()
+
+[Environment]::SetEnvironmentVariable("PLANNOTATOR_BROWSER", $link, "User")
+Write-Host "Plannotator will open in a new Firefox window. Restart terminals to pick it up."
+{{ end -}}
