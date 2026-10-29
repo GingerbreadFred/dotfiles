@@ -18,7 +18,6 @@ agent_panel_sort = "priority"
 status_indicators = "symbols"
 # Reclaim the tab row in single-tab spaces.
 hide_tab_bar_when_single_tab = true
-show_ide_tab_bar_when_single_tab = false
 
 [ui.sidebar.spaces]
 rows = [["state_icon", "workspace", "branch"]]
