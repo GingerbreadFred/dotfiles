@@ -1,0 +1,15 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+set -eu
+
+# Re-runs when the Brewfile changes or once Homebrew is on PATH:
+# Brewfile {{ include "dot_Brewfile" | sha256sum }}, brew {{ if lookPath "brew" }}found{{ else }}missing{{ end }}
+
+if ! command -v brew &>/dev/null; then
+    echo "Homebrew not found; install it, then run: brew bundle install --file ~/.Brewfile"
+    exit 0
+fi
+
+# No upgrades: a managed Mac may need each new version approved.
+brew bundle install --file "$HOME/.Brewfile" --no-upgrade
+{{ end -}}

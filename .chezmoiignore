@@ -7,6 +7,7 @@
 .config/yasb
 komorebi.json
 Documents/
+.config/winget/
 {{- end }}
 
 {{- /* macOS-only: the window manager, chezmoi's herdr hook (herdr installs its own
@@ -15,6 +16,7 @@ Documents/
 .config/aerospace/
 .claude/hooks/herdr-agent-state.sh
 .plannotator
+.Brewfile
 {{- end }}
 
 {{- /* zsh isn't used on Windows; remote Windows boxes skip the tiling WM */}}
