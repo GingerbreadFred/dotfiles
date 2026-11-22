@@ -1,0 +1,27 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+set -eu
+
+# FlightDeck is a notarized AeroSpace fork that reads the same config, for
+# managed work Macs that won't run AeroSpace's self-signed build.
+{{ if .work -}}
+cask="saadjs/tap/flightdeck"
+other="nikitabobko/tap/aerospace"
+{{- else -}}
+cask="nikitabobko/tap/aerospace"
+other="saadjs/tap/flightdeck"
+{{- end }}
+
+if ! command -v brew &>/dev/null; then
+    echo "Homebrew not found; install it, then run: brew install --cask $cask"
+    exit 0
+fi
+
+if brew list --cask "$other" &>/dev/null; then
+    echo "warning: $other is also installed; remove it so they don't both manage windows: brew uninstall --cask $other"
+fi
+
+if ! brew list --cask "$cask" &>/dev/null; then
+    brew install --cask "$cask"
+fi
+{{ end -}}
