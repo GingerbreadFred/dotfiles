@@ -1,6 +1,8 @@
-export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+if [ -d /opt/homebrew/opt/llvm/bin ]; then
+  export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+fi
 export PATH="$HOME/.local/bin:$PATH"
-if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
+if [ "$TERM_PROGRAM" != "Apple_Terminal" ] && command -v oh-my-posh >/dev/null && command -v brew >/dev/null; then
   eval "$(oh-my-posh init zsh --config $(brew --prefix oh-my-posh)/themes/catppuccin_mocha.omp.json)"
 fi
 
@@ -10,10 +12,18 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 export EDITOR="nvim"
 export VISUAL="nvim"
 
-# Open Plannotator in a new Firefox window rather than a tab
-export PLANNOTATOR_BROWSER="$HOME/.plannotator/firefox-new-window.sh"
+# Open Plannotator in a new Firefox window rather than a tab (macOS launcher only)
+if [ -x "$HOME/.plannotator/firefox-new-window.sh" ]; then
+  export PLANNOTATOR_BROWSER="$HOME/.plannotator/firefox-new-window.sh"
+fi
 
-alias ls='gls -alGh --classify --group-directories-first'
+if command -v gls >/dev/null; then
+  alias ls='gls -alGh --classify --group-directories-first'
+elif ls --version >/dev/null 2>&1; then
+  alias ls='ls -alGh --classify --group-directories-first' # GNU ls (Linux)
+else
+  alias ls='ls -alGhF' # BSD ls (macOS without coreutils)
+fi
 alias ll='ls'
 
 git-prune-branches() {
@@ -29,4 +39,6 @@ git-prune-branches() {
 }
 
 # Unity CLI
-. "/Users/rich/.unity/env"
+if [ -f "$HOME/.unity/env" ]; then
+  . "$HOME/.unity/env"
+fi
