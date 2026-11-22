@@ -1,3 +1,15 @@
 {{- $remote := promptBoolOnce . "remote" "Is this a machine you remote into (skip komorebi/whkd/yasb)" -}}
+{{- $work := promptBoolOnce . "work" "Is this a work machine" -}}
+{{- $workName := "" -}}
+{{- $workEmail := "" -}}
+{{- if $work -}}
+{{-   $workName = promptStringOnce . "workName" "Work git name" -}}
+{{-   $workEmail = promptStringOnce . "workEmail" "Work git email" -}}
+{{- end -}}
 [data]
     remote = {{ $remote }}
+    work = {{ $work }}
+{{- if $work }}
+    workName = {{ $workName | quote }}
+    workEmail = {{ $workEmail | quote }}
+{{- end }}

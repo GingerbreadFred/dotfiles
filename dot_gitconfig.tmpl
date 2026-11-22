@@ -1,6 +1,11 @@
 [user]
+{{- if .work }}
+	name = {{ .workName }}
+	email = {{ .workEmail }}
+{{- else }}
 	name = GingerbreadFred
 	email = richiwatson@gmail.com
+{{- end }}
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
