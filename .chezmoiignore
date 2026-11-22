@@ -1,18 +1,35 @@
 .config/yasb/yasb.log
-{{- if eq .chezmoi.os "darwin"}}
+
+{{- /* Windows-only configs */}}
+{{- if ne .chezmoi.os "windows" }}
 .config/whkdrc
 .config/powershell/
 .config/yasb
 komorebi.json
 Documents/
-{{- else if eq .chezmoi.os "windows"}}
-.zshrc
+{{- end }}
+
+{{- /* macOS-only: the window manager, chezmoi's herdr hook (herdr installs its own
+       elsewhere) and Plannotator's `open`-based Firefox launcher */}}
+{{- if ne .chezmoi.os "darwin" }}
 .config/aerospace/
 .claude/hooks/herdr-agent-state.sh
 .plannotator
+{{- end }}
+
+{{- /* zsh isn't used on Windows; remote Windows boxes skip the tiling WM */}}
+{{- if eq .chezmoi.os "windows" }}
+.zshrc
+.zprofile
 {{- if .remote }}
 komorebi.json
 .config/whkdrc
 .config/yasb
 {{- end }}
-{{- end}}
+{{- end }}
+
+{{- /* Claude Code, and Plannotator with it, isn't approved for work machines yet */}}
+{{- if .work }}
+.claude/
+.plannotator
+{{- end }}
