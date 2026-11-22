@@ -32,4 +32,7 @@ komorebi.json
 {{- if .work }}
 .claude/
 .plannotator
+{{- else }}
+{{- /* only work machines need the dotfiles-repo identity include */}}
+.config/git/personal-identity
 {{- end }}

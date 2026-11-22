@@ -1,11 +1,13 @@
+{{ if .work -}}
 [user]
-{{- if .work }}
 	name = {{ .workName }}
 	email = {{ .workEmail }}
-{{- else }}
-	name = GingerbreadFred
-	email = richiwatson@gmail.com
-{{- end }}
+# Commits to this public dotfiles repo keep the personal identity.
+[includeIf "gitdir:{{ .chezmoi.sourceDir }}/"]
+	path = ~/.config/git/personal-identity
+{{ else -}}
+{{ template "personal-identity" . -}}
+{{ end -}}
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
