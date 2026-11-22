@@ -14,6 +14,12 @@ if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
 
 # Already-installed packages are skipped and don't count as failures.
 winget import -i $list --no-upgrade --accept-package-agreements --accept-source-agreements --disable-interactivity
+# 0x8A15003A (APPINSTALLER_CLI_ERROR_BLOCKED_BY_POLICY): a managed machine that
+# disables winget is like one without it, so don't fail every apply.
+if ($LASTEXITCODE -eq -1978335174) {
+    Write-Host "winget is disabled by policy here; install the packages in $list another way."
+    exit 0
+}
 if ($LASTEXITCODE -ne 0) {
     Write-Host "winget import exited with $LASTEXITCODE; some packages may not have installed."
     exit $LASTEXITCODE
