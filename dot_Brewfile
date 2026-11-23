@@ -1,0 +1,9 @@
+# Installed by chezmoi (run_onchange_after_install-packages.sh) without upgrades;
+# upgrade by hand with `brew upgrade`. The font and window manager have their own scripts.
+brew "neovim"
+brew "herdr"
+brew "ripgrep"
+brew "coreutils"
+brew "git-lfs"
+brew "oh-my-posh"
+cask "wezterm"

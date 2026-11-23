@@ -1,0 +1,31 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+set -eu
+
+# Rendered differently once Homebrew is on PATH, so chezmoi re-runs this:
+# brew {{ if lookPath "brew" }}found{{ else }}missing{{ end }}
+
+# FlightDeck is a notarized AeroSpace fork that reads the same config, for
+# managed work Macs that won't run AeroSpace's self-signed build.
+{{ if .work -}}
+cask="saadjs/tap/flightdeck"
+other="nikitabobko/tap/aerospace"
+{{- else -}}
+cask="nikitabobko/tap/aerospace"
+other="saadjs/tap/flightdeck"
+{{- end }}
+
+if ! command -v brew &>/dev/null; then
+    echo "Homebrew not found; install it, then run: brew install --cask $cask"
+    exit 0
+fi
+
+if brew list --cask "$other" &>/dev/null; then
+    echo "warning: $other is installed and the two shouldn't both manage windows; swap with: brew uninstall --cask $other && brew install --cask $cask"
+    exit 0
+fi
+
+if ! brew list --cask "$cask" &>/dev/null; then
+    brew install --cask "$cask"
+fi
+{{ end -}}

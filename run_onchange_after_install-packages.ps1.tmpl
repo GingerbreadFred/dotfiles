@@ -1,0 +1,27 @@
+{{ if eq .chezmoi.os "windows" -}}
+# Installs ~/.config/winget/packages.json without upgrades; upgrade by hand with
+# `winget upgrade`. Remote machines skip komorebi, whkd and yasb (see the list).
+# Re-runs when the list or remote flag changes, or once winget is on PATH:
+# list {{ include "dot_config/winget/packages.json.tmpl" | sha256sum }}, remote {{ .remote }}, winget {{ if lookPath "winget" }}found{{ else }}missing{{ end }}
+$ErrorActionPreference = "Stop"
+
+$list = Join-Path $HOME ".config\winget\packages.json"
+
+if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
+    Write-Host "winget not found; install App Installer from the Microsoft Store, then run: winget import -i `"$list`" --no-upgrade"
+    exit 0
+}
+
+# Already-installed packages are skipped and don't count as failures.
+winget import -i $list --no-upgrade --accept-package-agreements --accept-source-agreements --disable-interactivity
+# 0x8A15003A (APPINSTALLER_CLI_ERROR_BLOCKED_BY_POLICY): a managed machine that
+# disables winget is like one without it, so don't fail every apply.
+if ($LASTEXITCODE -eq -1978335174) {
+    Write-Host "winget is disabled by policy here; install the packages in $list another way."
+    exit 0
+}
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "winget import exited with $LASTEXITCODE; some packages may not have installed."
+    exit $LASTEXITCODE
+}
+{{ end -}}
